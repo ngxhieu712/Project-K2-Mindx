@@ -1,0 +1,22 @@
+.main {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  min-height: 100vh;
+}
+
+.heroArea {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 992px) {
+  .heroArea {
+    flex-direction: column;
+  }
+}

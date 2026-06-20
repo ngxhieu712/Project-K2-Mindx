@@ -1,0 +1,138 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.card {
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  overflow: hidden;
+  position: relative;
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.cardLarge {
+  min-height: 160px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 24px 24px;
+}
+
+.cardSmall {
+  min-height: 74px;
+  padding: 14px 16px;
+}
+
+.cardContent {
+  z-index: 1;
+  color: #fff;
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.cardLarge .cardTitle {
+  font-size: 14px;
+}
+
+.cardSubtitle {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.cardSmall .cardSubtitle {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.cardCta {
+  display: inline-block;
+  background: #fff;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  transition: opacity var(--transition);
+}
+
+.card:hover .cardCta {
+  opacity: 0.9;
+}
+
+.cardImageArea {
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  opacity: 0.25;
+}
+
+.cardLarge .cardImageArea {
+  right: 20px;
+  bottom: 16px;
+  opacity: 0.2;
+}
+
+.cardEmoji {
+  font-size: 52px;
+}
+
+.cardLarge .cardEmoji {
+  font-size: 80px;
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .stack {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    min-width: unset;
+  }
+
+  .stack > * {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stack {
+    flex-direction: column;
+  }
+
+  .cardLarge {
+    min-height: 130px;
+  }
+}

@@ -1,0 +1,137 @@
+.section {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 18px 20px 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lightning {
+  font-size: 22px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: 0.5px;
+}
+
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.countdownLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.digit {
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 5px;
+  min-width: 32px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.sep {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.viewAll {
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity var(--transition);
+}
+
+.viewAll:hover {
+  opacity: 0.75;
+}
+
+/* Products row */
+.products {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+/* Skeleton loader */
+.loadingRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.skeleton {
+  height: 260px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 1100px) {
+  .products,
+  .loadingRow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .products > *:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .products,
+  .loadingRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .products > *:nth-child(n+5) {
+    display: none;
+  }
+  .section {
+    padding: 14px 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .title {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,128 @@
+.section {
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 24px 28px;
+}
+
+.inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.newsletter {
+  flex: 1;
+  min-width: 260px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--color-text);
+}
+
+.desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 14px;
+}
+
+.form {
+  display: flex;
+  gap: 0;
+  max-width: 420px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1.5px solid var(--color-border);
+}
+
+.input {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  background: #fff;
+  color: var(--color-text);
+}
+
+.input::placeholder {
+  color: #bbb;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition);
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.success {
+  font-size: 14px;
+  color: var(--color-badge-green);
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+/* Social */
+.social {
+  flex-shrink: 0;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.socialBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  transition: transform var(--transition), opacity var(--transition);
+  text-decoration: none;
+}
+
+.socialBtn:hover {
+  transform: scale(1.12);
+  opacity: 0.9;
+}
+
+.facebook  { background: #1877f2; }
+.youtube   { background: #ff0000; }
+.tiktok    { background: #000; }
+.zalo      { background: #0068ff; }
+
+@media (max-width: 600px) {
+  .inner {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .section {
+    padding: 20px 16px;
+  }
+  .form {
+    max-width: 100%;
+  }
+}
