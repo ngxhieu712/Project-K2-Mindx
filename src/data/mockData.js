@@ -5,19 +5,19 @@
 // ============================================================
 
 // TODO: GET /api/categories
-export const categories = [
-  { id: 1, name: "Điện thoại", icon: "📱", slug: "dien-thoai" },
-  { id: 2, name: "iPad - Tablet", icon: "📟", slug: "ipad-tablet" },
-  { id: 3, name: "Laptop", icon: "💻", slug: "laptop" },
-  { id: 4, name: "Âm thanh", icon: "🎧", slug: "am-thanh" },
-  { id: 5, name: "Đồng hồ", icon: "⌚", slug: "dong-ho" },
-  { id: 6, name: "Nhà thông minh", icon: "🏠", slug: "nha-thong-minh" },
-  { id: 7, name: "Phụ kiện", icon: "🔌", slug: "phu-kien" },
-  { id: 8, name: "PC - Máy in", icon: "🖥️", slug: "pc-may-in" },
-  { id: 9, name: "Máy cũ giá tốt", icon: "♻️", slug: "may-cu" },
-  { id: 10, name: "Sim & Thẻ cào", icon: "📶", slug: "sim-the-cao" },
-  { id: 11, name: "Dịch vụ & bảo hành", icon: "🛠️", slug: "dich-vu" },
-];
+// export const categories = [
+//   { id: 1, name: "Điện thoại", icon: "📱", slug: "dien-thoai" },
+//   { id: 2, name: "iPad - Tablet", icon: "📟", slug: "ipad-tablet" },
+//   { id: 3, name: "Laptop", icon: "💻", slug: "laptop" },
+//   { id: 4, name: "Âm thanh", icon: "🎧", slug: "am-thanh" },
+//   { id: 5, name: "Đồng hồ", icon: "⌚", slug: "dong-ho" },
+//   { id: 6, name: "Nhà thông minh", icon: "🏠", slug: "nha-thong-minh" },
+//   { id: 7, name: "Phụ kiện", icon: "🔌", slug: "phu-kien" },
+//   { id: 8, name: "PC - Máy in", icon: "🖥️", slug: "pc-may-in" },
+//   { id: 9, name: "Máy cũ giá tốt", icon: "♻️", slug: "may-cu" },
+//   { id: 10, name: "Sim & Thẻ cào", icon: "📶", slug: "sim-the-cao" },
+//   { id: 11, name: "Dịch vụ & bảo hành", icon: "🛠️", slug: "dich-vu" },
+// ];
 
 // TODO: GET /api/banners
 export const heroBanners = [

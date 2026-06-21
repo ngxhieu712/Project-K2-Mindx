@@ -20,7 +20,7 @@ function useCountdown(endTime) {
 }
 
 export default function FlashSale() {
-  const { products, loading } = useFlashSaleProducts();
+  const { products, loading, error } = useFlashSaleProducts();
   const { hours, minutes, seconds } = useCountdown(flashSaleEndTime);
 
   return (

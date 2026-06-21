@@ -1,16 +1,14 @@
+// src/App.jsx — PHẦN CẦN SỬA
+// ============================================================
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import Category from "./pages/Category/Category";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import { CategoryProvider } from "./context/CategoryContext"; // ✅ thêm import
 import "./index.css";
-
-// TODO: Add more pages as you build them:
-// import Search from "./pages/Search/Search";
-// import Cart from "./pages/Cart/Cart";
-// import Login from "./pages/Login/Login";
-// import Checkout from "./pages/Checkout/Checkout";
 
 function NotFound() {
   return (
@@ -26,18 +24,18 @@ function NotFound() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/danh-muc/:slug" element={<Category />} />
-        <Route path="/san-pham/:slug" element={<ProductDetail />} />
-        {/* TODO: Uncomment and add routes as pages are built */}
-        {/* <Route path="/search" element={<Search />} /> */}
-        {/* <Route path="/gio-hang" element={<Cart />} /> */}
-        {/* <Route path="/dang-nhap" element={<Login />} /> */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
+      {/* ✅ Bọc CategoryProvider ở đây — mọi route con (Header, Sidebar, Category page) 
+          đều dùng chung 1 lần fetch categories, không gọi API lại mỗi lần chuyển trang */}
+      <CategoryProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/danh-muc/:slug" element={<Category />} />
+          <Route path="/san-pham/:slug" element={<ProductDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </CategoryProvider>
     </BrowserRouter>
   );
 }

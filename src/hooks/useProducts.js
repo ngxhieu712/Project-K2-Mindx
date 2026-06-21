@@ -1,10 +1,6 @@
-// ============================================================
-// useProducts hook
-// TODO: Replace mock imports with actual API calls
-// Example: const res = await fetch('/api/flash-sale/products')
-// ============================================================
+// src/hooks/useProducts.js
 import { useState, useEffect } from "react";
-import { flashSaleProducts } from "../data/mockData";
+import { getFlashSaleProducts } from "../services/productService";
 
 export function useFlashSaleProducts() {
   const [products, setProducts] = useState([]);
@@ -12,12 +8,22 @@ export function useFlashSaleProducts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // TODO: Replace with: const res = await fetch('/api/flash-sale/products')
-    const timer = setTimeout(() => {
-      setProducts(flashSaleProducts);
-      setLoading(false);
-    }, 300);
-    return () => clearTimeout(timer);
+    let cancelled = false;
+
+    getFlashSaleProducts()
+      .then((data) => {
+        if (!cancelled) setProducts(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true; // tránh setState sau khi component unmount
+    };
   }, []);
 
   return { products, loading, error };
