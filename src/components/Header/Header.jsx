@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 import styles from "./Header.module.css";
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
+  const { totalItems } = useCart();
 
   function handleSearch(e) {
     e.preventDefault();
@@ -79,7 +81,9 @@ export default function Header() {
             </Link>
             <Link to="/gio-hang" className={styles.actionItem}>
               <span className={styles.cartIcon}>🛒</span>
-              <span className={styles.cartBadge}>0</span>
+              {totalItems > 0 && (
+                <span className={styles.cartBadge}>{totalItems > 99 ? "99+" : totalItems}</span>
+              )}
             </Link>
           </div>
         </div>
