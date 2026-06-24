@@ -1,0 +1,46 @@
+/* src/admin/components/StatusBadge.css */
+
+.adm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.adm-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.adm-badge-success {
+  background: var(--adm-success-soft);
+  color: var(--adm-success);
+}
+.adm-badge-warning {
+  background: var(--adm-warning-soft);
+  color: var(--adm-warning);
+}
+.adm-badge-danger {
+  background: var(--adm-danger-soft);
+  color: var(--adm-danger);
+}
+.adm-badge-info {
+  background: var(--adm-info-soft);
+  color: var(--adm-info);
+}
+.adm-badge-neutral {
+  background: var(--adm-neutral-soft);
+  color: var(--adm-neutral);
+}
+.adm-badge-accent {
+  background: var(--adm-accent-soft);
+  color: var(--adm-accent);
+}

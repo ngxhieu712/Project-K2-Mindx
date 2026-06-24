@@ -1,0 +1,235 @@
+/* src/admin/admin-tokens.css
+ *
+ * Design tokens cho toàn bộ Admin Panel.
+ * Import file này MỘT LẦN duy nhất ở AdminLayout (các file CSS con sẽ dùng var()).
+ *
+ * Hướng thiết kế:
+ * - Sidebar tối (#14161F) để tách biệt rõ "vùng điều hướng vận hành" khỏi
+ *   "vùng nội dung" sáng — một admin console cần cảm giác buồng lái, không
+ *   lẫn với giao diện mua sắm (buyer) hay gian hàng (seller) của app.
+ * - Màu nhấn chàm (#3D4FFF) dùng tiết kiệm: chỉ cho hành động chính & điểm nhấn nav.
+ * - Số liệu luôn dùng tabular-nums để các cột số thẳng hàng.
+ */
+
+:root {
+  /* ---- Nền & bề mặt ---- */
+  --adm-bg: #f7f8fb;
+  --adm-surface: #ffffff;
+  --adm-surface-muted: #f1f3f7;
+  --adm-border: #e5e8ee;
+  --adm-border-strong: #d7dbe3;
+
+  /* ---- Sidebar (tối) ---- */
+  --adm-sidebar-bg: #14161f;
+  --adm-sidebar-bg-hover: #1e212d;
+  --adm-sidebar-text: #c4c8d4;
+  --adm-sidebar-text-muted: #80869a;
+  --adm-sidebar-active-bg: #232744;
+  --adm-sidebar-border: #232633;
+
+  /* ---- Văn bản ---- */
+  --adm-text: #14161f;
+  --adm-text-secondary: #5b6172;
+  --adm-text-muted: #8d93a3;
+  --adm-text-on-accent: #ffffff;
+
+  /* ---- Màu nhấn chính ---- */
+  --adm-accent: #3d4fff;
+  --adm-accent-hover: #2f3fe0;
+  --adm-accent-soft: #ecefff;
+
+  /* ---- Trạng thái ---- */
+  --adm-success: #16a34a;
+  --adm-success-soft: #e8f8ee;
+  --adm-warning: #d97706;
+  --adm-warning-soft: #fef3e2;
+  --adm-danger: #dc2626;
+  --adm-danger-soft: #fdecec;
+  --adm-info: #0ea5e9;
+  --adm-info-soft: #e7f7fd;
+  --adm-neutral: #6b7280;
+  --adm-neutral-soft: #eef0f3;
+
+  /* ---- Typography ---- */
+  --adm-font-base:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --adm-font-mono: 'SF Mono', 'Roboto Mono', Consolas, monospace;
+
+  /* ---- Bo góc & bóng ---- */
+  --adm-radius-sm: 6px;
+  --adm-radius-md: 10px;
+  --adm-radius-lg: 16px;
+  --adm-shadow-sm: 0 1px 2px rgba(20, 22, 31, 0.04);
+  --adm-shadow-md: 0 4px 16px rgba(20, 22, 31, 0.06);
+  --adm-shadow-lg: 0 12px 32px rgba(20, 22, 31, 0.1);
+
+  /* ---- Layout ---- */
+  --adm-sidebar-width: 248px;
+  --adm-topbar-height: 64px;
+}
+
+/* ---- Reset nhẹ, chỉ áp dụng trong phạm vi .admin-root ---- */
+.admin-root,
+.admin-root * {
+  box-sizing: border-box;
+}
+
+.admin-root {
+  font-family: var(--adm-font-base);
+  color: var(--adm-text);
+  background: var(--adm-bg);
+}
+
+.admin-root table {
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-root button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.admin-root a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---- Tiện ích chung dùng lại nhiều nơi ---- */
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: var(--adm-radius-sm);
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.adm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.adm-btn-primary {
+  background: var(--adm-accent);
+  color: var(--adm-text-on-accent);
+}
+.adm-btn-primary:hover:not(:disabled) {
+  background: var(--adm-accent-hover);
+}
+
+.adm-btn-outline {
+  background: var(--adm-surface);
+  border-color: var(--adm-border-strong);
+  color: var(--adm-text);
+}
+.adm-btn-outline:hover:not(:disabled) {
+  border-color: var(--adm-accent);
+  color: var(--adm-accent);
+}
+
+.adm-btn-danger {
+  background: var(--adm-surface);
+  border-color: var(--adm-danger);
+  color: var(--adm-danger);
+}
+.adm-btn-danger:hover:not(:disabled) {
+  background: var(--adm-danger-soft);
+}
+
+.adm-btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--adm-text-secondary);
+}
+.adm-btn-ghost:hover:not(:disabled) {
+  background: var(--adm-surface-muted);
+}
+
+.adm-btn-sm {
+  padding: 5px 10px;
+  font-size: 12.5px;
+}
+
+.adm-card {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius-lg);
+  box-shadow: var(--adm-shadow-sm);
+}
+
+.adm-input,
+.adm-select {
+  font-family: inherit;
+  font-size: 13.5px;
+  padding: 8px 12px;
+  border: 1px solid var(--adm-border-strong);
+  border-radius: var(--adm-radius-sm);
+  background: var(--adm-surface);
+  color: var(--adm-text);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.adm-input:focus,
+.adm-select:focus {
+  border-color: var(--adm-accent);
+}
+
+.adm-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.adm-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.adm-page-subtitle {
+  font-size: 13.5px;
+  color: var(--adm-text-secondary);
+  margin: 0;
+}
+
+.adm-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.adm-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  text-align: center;
+  color: var(--adm-text-muted);
+  gap: 6px;
+}
+
+.adm-empty-state strong {
+  color: var(--adm-text-secondary);
+  font-size: 14.5px;
+}
+
+.adm-loading-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  color: var(--adm-text-muted);
+  font-size: 13.5px;
+}

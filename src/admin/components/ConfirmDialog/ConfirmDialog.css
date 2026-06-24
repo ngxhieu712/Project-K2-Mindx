@@ -1,0 +1,40 @@
+/* src/admin/components/ConfirmDialog.css */
+
+.adm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 31, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.adm-dialog {
+  background: var(--adm-surface);
+  border-radius: var(--adm-radius-lg);
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--adm-shadow-lg);
+}
+
+.adm-dialog-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.adm-dialog-message {
+  font-size: 13.5px;
+  color: var(--adm-text-secondary);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.adm-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

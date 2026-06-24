@@ -1,0 +1,80 @@
+/* src/admin/components/DataTable.css */
+
+.adm-table-wrap {
+  overflow-x: auto;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.adm-table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--adm-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--adm-border);
+  white-space: nowrap;
+}
+
+.adm-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--adm-border);
+  vertical-align: middle;
+}
+
+.adm-table tbody tr {
+  transition: background 0.12s ease;
+}
+
+.adm-table tbody tr:hover {
+  background: var(--adm-surface-muted);
+}
+
+.adm-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.adm-table-row-clickable {
+  cursor: pointer;
+}
+
+.adm-cell-primary {
+  font-weight: 600;
+  color: var(--adm-text);
+}
+
+.adm-cell-secondary {
+  color: var(--adm-text-muted);
+  font-size: 12.5px;
+}
+
+.adm-cell-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.adm-search-input-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+}
+
+.adm-search-input-wrap svg {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--adm-text-muted);
+}
+
+.adm-search-input-wrap input {
+  width: 100%;
+  padding-left: 34px;
+}

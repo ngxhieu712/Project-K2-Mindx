@@ -1,0 +1,29 @@
+/* src/admin/components/Pagination.css */
+
+.adm-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 4px 4px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.adm-pagination-info {
+  font-size: 12.5px;
+  color: var(--adm-text-muted);
+}
+
+.adm-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-pagination-page {
+  font-size: 12.5px;
+  color: var(--adm-text-secondary);
+  font-variant-numeric: tabular-nums;
+  min-width: 50px;
+  text-align: center;
+}
