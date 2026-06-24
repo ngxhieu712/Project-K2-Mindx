@@ -2,17 +2,16 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useCategories } from "../../context/CategoryContext";
-import { supabase } from "../../services/supabaseClient";
+import { useAuth } from "../../context/AuthContext";
 import styles from "./Header.module.css";
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
   const { totalItems } = useCart();
   const { categories } = useCategories();
+  const { user, profile } = useAuth();
   const menuRef = useRef(null);
 
   // Đóng dropdown khi click ra ngoài
@@ -26,57 +25,12 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadUser() {
-      const { data } = await supabase.auth.getUser();
-      if (!mounted) return;
-      setUser(data.user);
-
-      if (data.user) {
-        const { data: userProfile } = await supabase
-          .from("users")
-          .select("name,email")
-          .eq("id", data.user.id)
-          .maybeSingle();
-
-        if (mounted) setProfile(userProfile);
-      } else {
-        setProfile(null);
-      }
-    }
-
-    loadUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (!session?.user) setProfile(null);
-      if (session?.user) loadUser();
-    });
-
-    return () => {
-      mounted = false;
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
   function handleSearch(e) {
     e.preventDefault();
     if (searchValue.trim()) {
-      // TODO: navigate to search results page
       navigate(`/search?q=${encodeURIComponent(searchValue.trim())}`);
     }
   }
-
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    navigate("/");
-  }
-
-  const accountName = profile?.name || user?.email;
 
   return (
     <header className={styles.header}>
@@ -92,9 +46,14 @@ export default function Header() {
           </div>
           <div className={styles.topActions}>
             {user ? (
-              <button type="button" className={styles.topButton} onClick={handleLogout}>
-                {accountName} / Đăng xuất
-              </button>
+              <div style={{ display: "flex", gap: 16 }}>
+                {(profile?.role === "seller" || profile?.role === "admin") && (
+                  <Link to="/seller" className={styles.topLink}>🏪 Quản lý</Link>
+                )}
+                <Link to="/tai-khoan" className={styles.topLink}>
+                  👤 {profile?.name || user.email}
+                </Link>
+              </div>
             ) : (
               <Link to="/dang-nhap" className={styles.topLink}>Đăng nhập / Đăng ký</Link>
             )}
