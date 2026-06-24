@@ -1,126 +1,153 @@
-# HNstore – E-commerce Frontend (React + Vite)
+# HNstore – Marketplace Frontend (React + Vite + Supabase)
 
 Giao diện thương mại điện tử tái hiện từ thiết kế tham khảo, đổi thương hiệu thành **HNstore**. Không sử dụng bất kỳ tài sản/thương hiệu của CellphoneS.
+
+Dự án đã chuyển từ mock data sang **Supabase** (PostgreSQL + Auth + Auto REST API), theo mô hình **marketplace đa người bán** (nhiều seller, không phải 1 shop đơn lẻ).
 
 ## 🚀 Tech Stack
 
 - **React 19** + **Vite 6**
 - **React Router v6** – điều hướng SPA
-- **CSS Modules** – style scoped theo component, không xung đột class
-- **Mock Data** – toàn bộ dữ liệu giả lập, có sẵn TODO để bạn nối API/DB thật
+- **CSS Modules** – style scoped theo component
+- **Supabase** – database (PostgreSQL), Auth, auto-generated REST API
+- **Context API** – chia sẻ data fetch 1 lần (categories) cho toàn app
 
-> Ant Design **không** được dùng trong bản này vì toàn bộ UI đã được build bằng CSS Modules thuần để khớp pixel-perfect với thiết kế gốc (Ant Design áp css riêng sẽ làm lệch layout/spacing). Nếu bạn vẫn muốn dùng AntD cho các trang sau (ví dụ trang quản trị/dashboard), chạy:
-> ```bash
-> npm install antd
-> ```
+> Ant Design **không** được dùng — UI build bằng CSS Modules thuần để khớp pixel-perfect với thiết kế gốc.
 
 ## 📦 Cài đặt
 
 ```bash
 npm install
-npm run dev       # chạy dev server tại http://localhost:3000
-npm run build     # build production vào /dist
-npm run preview   # xem thử bản build
+npm install @supabase/supabase-js react-router-dom
+
+cp .env.example .env
+# Điền VITE_SUPABASE_URL và VITE_SUPABASE_ANON_KEY (xem mục "Kết nối Supabase")
+
+npm run dev       # http://localhost:3000
+npm run build
+npm run preview
 ```
 
 ## 🗂️ Kiến trúc thư mục
 
-Xem chi tiết ở cuối README — phần "Cây thư mục đầy đủ".
-
-Nguyên tắc tổ chức:
-- `components/` — mỗi component có folder riêng chứa `.jsx` + `.module.css` cùng tên
-- `components/common/` — component dùng lại nhiều nơi (ProductCard, Breadcrumb...)
-- `pages/` — mỗi route là 1 page, cũng theo cặp `.jsx` + `.module.css`
-- `data/mockData.js` — **toàn bộ dữ liệu giả**, đánh dấu rõ bằng comment `// TODO:`
-- `hooks/` — custom hooks (data fetching, v.v.)
-- `utils/` — hàm thuần (format giá, format thời gian...)
-
-## 🔌 Kết nối Database / API thật
-
-Mọi nơi cần dữ liệu thật đều có comment `// TODO:` chỉ rõ endpoint gợi ý. Ví dụ trong `src/data/mockData.js`:
-
-```js
-// TODO: GET /api/categories
-export const categories = [...]
-
-// TODO: GET /api/flash-sale/products
-export const flashSaleProducts = [...]
-
-// TODO: GET /api/products/:slug
-export function getProductBySlug(slug) {...}
+```
+src/
+├── components/           # Mỗi component: {Name}.jsx + {Name}.module.css
+│   ├── Header/
+│   ├── CategorySidebar/  # Đọc categories từ Context, không tự fetch
+│   ├── HeroBanner/
+│   ├── CategoryPills/
+│   ├── PromoBanners/
+│   ├── FlashSale/        # ⚠️ Tạm hiển thị sản phẩm mới nhất — xem ghi chú dưới
+│   ├── WhyUs/
+│   ├── TechNews/
+│   ├── Newsletter/
+│   ├── Footer/           # Dùng nội dung tĩnh trong data/mockData.js
+│   └── common/
+│       ├── ProductCard/
+│       └── Breadcrumb/
+├── pages/
+│   ├── Home/
+│   ├── Category/         # /danh-muc/:slug
+│   └── ProductDetail/    # /san-pham/:slug
+├── context/
+│   └── CategoryContext.jsx   # Fetch categories 1 lần, share toàn app
+├── services/
+│   ├── supabaseClient.js     # Khởi tạo Supabase client
+│   ├── productService.js     # Query products/variants/images/reviews
+│   └── contentService.js     # Query banners/promos/news/categories
+├── hooks/
+│   └── useProducts.js
+├── utils/
+│   └── format.js
+└── data/
+    └── mockData.js        # CHỈ còn footerLinks (nội dung tĩnh) — xem mục dưới
 ```
 
-**Cách thay thế gợi ý** (ví dụ với `useProducts.js`):
+## 🔌 Kết nối Supabase
 
-```js
-// Trước (mock):
-useEffect(() => {
-  setTimeout(() => setProducts(flashSaleProducts), 300);
-}, []);
+### 1. Lấy thông tin project
 
-// Sau (API thật):
-useEffect(() => {
-  fetch('/api/flash-sale/products')
-    .then(res => res.json())
-    .then(setProducts)
-    .catch(setError)
-    .finally(() => setLoading(false));
-}, []);
+Supabase Dashboard → project của bạn → **Settings** → **API**:
+- `Project URL` → dán vào `VITE_SUPABASE_URL`
+- `Project API keys` → copy key **`anon` `public`** (KHÔNG dùng `service_role`) → dán vào `VITE_SUPABASE_ANON_KEY`
+
+⚠️ Lấy domain gốc, không lấy URL có sẵn `/rest/v1/` ở cuối — Supabase SDK tự thêm phần đó.
+
+```env
+VITE_SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIs...
 ```
 
-Toàn bộ component đã được viết theo dạng nhận `props`/đọc từ `hooks`, nên bạn chỉ cần đổi nguồn dữ liệu ở `data/` hoặc `hooks/`, **không cần sửa UI**.
+### 2. Chạy schema SQL
+
+Trong Supabase Dashboard → **SQL Editor** → New query, chạy theo thứ tự:
+
+| File | Khi nào chạy |
+|---|---|
+|đã dùng các schema mới hoàn toàn, không dùng các dữ liệu trước đó nữa
+
+
+### 3. Đăng nhập / Đăng ký dùng Supabase Auth
+
+Bảng `users` (public) chỉ lưu **profile** (name, phone, role) — **không** lưu password. Supabase Auth tự quản lý password ở bảng ẩn `auth.users`. Một trigger SQL (`on_auth_user_created`) tự tạo profile tương ứng mỗi khi có người `signUp` thành công.
+
+```js
+// Đăng ký
+await supabase.auth.signUp({ email, password });
+
+// Đăng nhập
+await supabase.auth.signInWithPassword({ email, password });
+
+// Lấy user hiện tại
+const { data: { user } } = await supabase.auth.getUser();
+```
+
+## 🗄️ Database Schema (marketplace đa người bán)
+
+| Bảng | Vai trò |
+|---|---|
+| `users` | Profile user — liên kết `auth.users`, có `role`: admin / buyer / seller |
+| `addresses` | Mỗi user nhiều địa chỉ giao hàng |
+| `brands` | Thương hiệu (Apple, Samsung...) |
+| `categories`, `category_shortcuts` | Danh mục sản phẩm |
+| `products` | Sản phẩm — có `seller_id` (ai đăng bán), `slug`, `status` (active/pending/locking) |
+| `product_images` | Nhiều ảnh / sản phẩm, có `display_order` |
+| `product_variants` | Biến thể (màu/size/dung lượng), giá và kho riêng từng variant |
+| `reviews` | Đánh giá sản phẩm — chỉ user **đã mua và đơn hàng `delivered`** mới review được |
+| `orders`, `order_items` | Đơn hàng và chi tiết từng dòng |
+| `payments` | Thanh toán theo đơn hàng |
+| `banners`, `promos`, `news`, `newsletter_subscribers` | Nội dung trang chủ |
+
+Row Level Security (RLS) đã bật cho mọi bảng — user chỉ thấy đơn hàng/địa chỉ của chính mình, seller chỉ sửa được sản phẩm mình đăng, sản phẩm `pending`/`locking` ẩn khỏi người mua thường.
+
+## ⚠️ Phần đang để tạm / TODO
+
+- **Flash Sale**: UI vẫn giữ nguyên (mục đích trang trí) nhưng đang hiển thị lại "sản phẩm mới nhất" qua `getLatestProducts()`, **chưa có giảm giá thật**. Khi cần làm thật, thêm bảng `flash_sales` (`product_id`, `discount_percent`, `start_at`, `end_at`) rồi đổi `getFlashSaleProducts()` trong `productService.js`.
+- **soldCount**: chưa có nguồn dữ liệu — cần đếm từ `order_items` (tổng `quantity` theo `product_id`), chưa viết hàm.
+- **Tìm kiếm** (`/search`), **giỏ hàng** (`/gio-hang`), **trang đăng nhập**: chưa có route, mới có ghi chú trong `App.jsx`.
+
+## 🔌 Data còn lại trong `mockData.js`
+
+Sau khi chuyển sang Supabase, file này **chỉ nên giữ** `footerLinks` — nội dung tĩnh (chính sách, về chúng tôi...), không cần database. Mọi export khác (`categories`, `products`, `banners`...) đã được thay bằng query Supabase trong `services/`.
 
 ## 📱 Responsive
 
-Mobile-first, breakpoints chính: `480px`, `600px`, `768px`, `992px`, `1100px`. Sidebar danh mục tự ẩn dưới `992px`, các grid sản phẩm/tin tức tự rút cột khi màn hình nhỏ.
+Mobile-first, breakpoints: `480px`, `600px`, `768px`, `992px`, `1100px`.
 
 ## ✅ Đã hoàn thành
 
-- [x] Header (sticky, search, hotline, cart badge)
-- [x] Category Sidebar
-- [x] Hero Banner (carousel auto-play 4s + dots + prev/next)
-- [x] Category Pills (shortcut icon)
-- [x] Promo Banners (4 ô khuyến mãi)
-- [x] Flash Sale (đếm ngược thời gian thực + skeleton loading)
-- [x] Why Us (5 lý do chọn HNstore)
-- [x] Tech News (4 bài viết)
-- [x] Newsletter + Social links
-- [x] Footer (4 cột + payment badges)
-- [x] Trang danh mục `/danh-muc/:slug`
-- [x] Trang chi tiết sản phẩm `/san-pham/:slug`
-- [x] Trang 404
+- [x] Toàn bộ UI trang chủ (Header, Banner, Promo, WhyUs, TechNews, Newsletter, Footer)
+- [x] Trang danh mục, trang chi tiết sản phẩm
+- [x] Kết nối Supabase: products, categories, banners, promos, news
+- [x] Supabase Auth (signup/login) + auto-tạo profile qua trigger
+- [x] Schema marketplace: seller, variants, reviews, addresses, orders, payments
+- [x] Row Level Security cho toàn bộ bảng
 
-## 🔜 Gợi ý mở rộng tiếp theo
+## 🔜 Gợi ý tiếp theo
 
-- [ ] Trang giỏ hàng `/gio-hang` + Context/Zustand quản lý state cart
-- [ ] Trang tìm kiếm `/search?q=`
-- [ ] Trang đăng nhập/đăng ký
-- [ ] Trang tin tức chi tiết `/tin-tuc/:slug`
-- [ ] Pagination cho trang danh mục
-- [ ] Filter/sort sản phẩm (giá, mới nhất, bán chạy)
-
-## Tóm tắt các trang đã làm
-✅ Trang mới (giao diện xong, chưa có chức năng thật)
-Trang	Route	Ghi chú
-Giỏ hàng	/gio-hang	CartContext quản lý state, banner tiến độ miễn phí ship 300k
-Tìm kiếm	/search?q=	Filter giá, sort (mới/bán chạy/giá), pagination
-Đăng nhập / Đăng ký	/dang-nhap	Validation form, chuyển tab, nút Google/Facebook
-Tin tức chi tiết	/tin-tuc/:slug	Layout bài viết + sidebar tin liên quan
-Hệ thống cửa hàng	/cua-hang	Google Maps embed, click đổi địa điểm, tìm kiếm cửa hàng
-Tra cứu đơn hàng	/tra-cuu-don-hang	Form tra cứu, timeline trạng thái (demo 2 đơn mẫu)
-Chính sách giao hàng	/giao-hang	Bảng phí, 3 hình thức giao, FAQ accordion
-##
-✅ Tính năng bổ sung vào trang cũ
-Trang	Thêm gì
-Trang danh mục /danh-muc/:slug	Sort + Pagination
-Header	Dropdown danh mục khi click "☰ Danh mục", badge giỏ hàng hiển thị số thật, các link top bar dẫn đúng trang
-##
-⚠️ Cần làm thêm (chức năng thật)
-Đăng nhập/Đăng ký → kết nối supabase.auth
-Giỏ hàng → lưu vào Supabase hoặc localStorage
-Tra cứu đơn hàng → kết nối bảng orders Supabase
-Tìm kiếm → đang query Supabase thật rồi, cần có data sản phẩm
-Dropdown danh mục → cần có data trong bảng categories Supabase
-##
-📌 Lưu ý  
-Bảng categories trong Supabase cần có data thì dropdown danh mục mới hiện. Hiện tại bạn kia mới chỉ có data "phân loại sản phẩm" — cần nhập thêm các bảng: products, news, orders.
+- [ ] Trang giỏ hàng + state quản lý cart (Context hoặc Zustand)
+- [ ] Trang tìm kiếm sản phẩm
+- [ ] Trang quản lý seller (CRUD sản phẩm, xem đơn hàng)
+- [ ] Tích hợp thanh toán thật (VNPay/Momo) → cập nhật bảng `payments`
+- [ ] Bảng `flash_sales` nếu muốn làm thật phần khuyến mãi giới hạn thời gian
