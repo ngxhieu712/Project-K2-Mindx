@@ -40,6 +40,7 @@ export default function App() {
             <Route path="/gio-hang" element={<Cart />} />
             <Route path="/search" element={<Search />} />
             <Route path="/dang-nhap" element={<Auth />} />
+            <Route path="/dang-ky" element={<Auth initialTab="register" />} />
             <Route path="/tin-tuc/:slug" element={<NewsDetail />} />
             <Route path="/cua-hang" element={<Store />} />
             <Route path="/tra-cuu-don-hang" element={<OrderLookup />} />

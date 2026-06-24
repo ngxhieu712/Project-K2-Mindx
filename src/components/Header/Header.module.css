@@ -37,6 +37,20 @@
   color: #fff;
 }
 
+.topButton {
+  color: rgba(255, 255, 255, 0.9);
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.topButton:hover {
+  color: #fff;
+}
+
 .topActions {
   flex-shrink: 0;
 }

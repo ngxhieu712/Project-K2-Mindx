@@ -1,10 +1,11 @@
 // src/pages/Auth/Auth.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../../services/supabaseClient";
 import styles from "./Auth.module.css";
 
-export default function Auth() {
-  const [tab, setTab] = useState("login"); // "login" | "register"
+export default function Auth({ initialTab = "login" }) {
+  const [tab, setTab] = useState(initialTab); // "login" | "register"
 
   return (
     <main className={styles.main}>
@@ -57,19 +58,27 @@ function LoginForm() {
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-    setErrors((err) => ({ ...err, [e.target.name]: "" }));
+    setErrors((err) => ({ ...err, [e.target.name]: "", form: "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const e2 = validate();
     if (Object.keys(e2).length > 0) return setErrors(e2);
     setLoading(true);
-    // TODO: gọi supabase.auth.signInWithPassword(...)
-    setTimeout(() => {
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email.trim(),
+      password: form.password,
+    });
+
+    if (error) {
       setLoading(false);
-      navigate("/");
-    }, 1000);
+      return setErrors({ form: getAuthErrorMessage(error.message) });
+    }
+
+    setLoading(false);
+    navigate("/");
   }
 
   return (
@@ -105,6 +114,8 @@ function LoginForm() {
       </div>
 
       <div className={styles.forgotLink}>Quên mật khẩu?</div>
+
+      {errors.form && <div className={styles.formError}>{errors.form}</div>}
 
       <button type="submit" className={styles.submitBtn} disabled={loading}>
         {loading ? "Đang đăng nhập..." : "Đăng nhập"}
@@ -144,20 +155,43 @@ function RegisterForm({ onSuccess }) {
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-    setErrors((err) => ({ ...err, [e.target.name]: "" }));
+    setErrors((err) => ({ ...err, [e.target.name]: "", form: "" }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const e2 = validate();
     if (Object.keys(e2).length > 0) return setErrors(e2);
     setLoading(true);
-    // TODO: gọi supabase.auth.signUp(...)
-    setTimeout(() => {
+
+    const { data, error } = await supabase.auth.signUp({
+      email: form.email.trim(),
+      password: form.password,
+      options: {
+        data: {
+          name: form.name.trim(),
+          role: "buyer",
+        },
+      },
+    });
+
+    if (error) {
       setLoading(false);
-      setSuccess(true);
-      setTimeout(onSuccess, 2000);
-    }, 1000);
+      return setErrors({ form: getAuthErrorMessage(error.message) });
+    }
+
+    if (data.user && data.session) {
+      await supabase.from("users").upsert({
+        id: data.user.id,
+        name: form.name.trim(),
+        email: form.email.trim(),
+        role: "buyer",
+      });
+    }
+
+    setLoading(false);
+    setSuccess(true);
+    setTimeout(onSuccess, 2000);
   }
 
   if (success) {
@@ -230,9 +264,25 @@ function RegisterForm({ onSuccess }) {
         {errors.confirm && <span className={styles.errorMsg}>{errors.confirm}</span>}
       </div>
 
+      {errors.form && <div className={styles.formError}>{errors.form}</div>}
+
       <button type="submit" className={styles.submitBtn} disabled={loading}>
         {loading ? "Đang đăng ký..." : "Tạo tài khoản"}
       </button>
     </form>
   );
+}
+
+function getAuthErrorMessage(message) {
+  const text = message.toLowerCase();
+  if (text.includes("invalid login credentials")) {
+    return "Email hoặc mật khẩu không đúng";
+  }
+  if (text.includes("already registered") || text.includes("already been registered")) {
+    return "Email này đã được đăng ký";
+  }
+  if (text.includes("email not confirmed")) {
+    return "Email chưa được xác nhận";
+  }
+  return message || "Có lỗi xảy ra, vui lòng thử lại";
 }
