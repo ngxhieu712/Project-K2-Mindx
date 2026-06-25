@@ -123,6 +123,10 @@
   gap: 10px;
 }
 
+.roleOptionsThree {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .roleOption {
   display: flex;
   align-items: center;

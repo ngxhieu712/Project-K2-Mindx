@@ -17,7 +17,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
 import { useAdminAuth } from '../hooks/useAdminAuth';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../services/supabaseClient';
 import '../admin-tokens.css';
 import './AdminLayout.css';
 
@@ -45,12 +45,12 @@ export default function AdminLayout() {
 
   if (!isAdmin) {
     // Không có quyền admin -> đưa về trang đăng nhập của app chính.
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/dang-nhap" replace state={{ from: '/admin' }} />;
   }
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    window.location.href = '/login';
+    window.location.href = '/dang-nhap';
   }
 
   return (

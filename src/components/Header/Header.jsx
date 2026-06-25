@@ -47,7 +47,10 @@ export default function Header() {
           <div className={styles.topActions}>
             {user ? (
               <div style={{ display: "flex", gap: 16 }}>
-                {(profile?.role === "seller" || profile?.role === "admin") && (
+                {profile?.role === "admin" && (
+                  <Link to="/admin" className={styles.topLink}>⚙️ Admin</Link>
+                )}
+                {profile?.role === "seller" && (
                   <Link to="/seller" className={styles.topLink}>🏪 Quản lý</Link>
                 )}
                 <Link to="/tai-khoan" className={styles.topLink}>

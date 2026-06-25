@@ -1,0 +1,42 @@
+/* src/admin/pages/ProductDetailPage.css */
+
+.adm-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.adm-detail-sub-h {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--adm-text-secondary);
+  margin: 18px 0 6px;
+}
+
+.adm-product-description {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--adm-text-secondary);
+  margin: 0;
+}
+
+.adm-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.adm-image-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--adm-radius-md);
+  border: 1px solid var(--adm-border);
+  background: var(--adm-surface-muted);
+}
+
+.adm-stock-zero {
+  color: var(--adm-danger);
+  font-weight: 600;
+}

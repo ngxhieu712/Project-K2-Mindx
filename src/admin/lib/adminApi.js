@@ -5,7 +5,7 @@
 //
 // QUAN TRỌNG: import `supabase` từ file client đã có sẵn trong dự án của bạn.
 // Nếu đường dẫn khác, chỉ cần sửa dòng import dưới đây.
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../services/supabaseClient';
 
 // ---------------------------------------------------------------------------
 // AUTH / PHÂN QUYỀN
@@ -328,6 +328,20 @@ export async function updateProductStatus(productId, status) {
 export async function deleteProduct(productId) {
   const { error } = await supabase.from('products').delete().eq('id', productId);
   if (error) throw error;
+}
+
+/**
+ * Lấy toàn bộ sản phẩm của 1 seller (không phân trang) — dùng cho trang
+ * báo cáo chi tiết seller.
+ */
+export async function fetchProductsBySeller(sellerId) {
+  const { data, error } = await supabase
+    .from('products')
+    .select('id, name, base_price, status')
+    .eq('seller_id', sellerId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
 }
 
 // ---------------------------------------------------------------------------

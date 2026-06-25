@@ -1,0 +1,95 @@
+/* src/admin/pages/UserDetailPage.css */
+
+.adm-back-btn {
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.adm-detail-role-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--adm-text-secondary);
+}
+
+.adm-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 800px) {
+  .adm-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adm-detail-card,
+.adm-detail-card-full {
+  padding: 20px 22px;
+}
+
+.adm-detail-card h3,
+.adm-detail-card-full h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.adm-detail-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  margin: 0;
+}
+
+.adm-detail-list dt {
+  font-size: 12px;
+  color: var(--adm-text-muted);
+  margin-bottom: 3px;
+}
+
+.adm-detail-list dd {
+  font-size: 13.5px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.adm-address-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.adm-address-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--adm-border);
+}
+
+.adm-address-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.adm-address-list li span {
+  color: var(--adm-text-secondary);
+}
+
+.adm-default-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--adm-accent);
+  background: var(--adm-accent-soft);
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 6px;
+}

@@ -11,7 +11,7 @@
 
 import { useEffect, useState } from 'react';
 import { getCurrentAppUser } from '../lib/adminApi';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../services/supabaseClient';
 
 export function useAdminAuth() {
   const [state, setState] = useState({

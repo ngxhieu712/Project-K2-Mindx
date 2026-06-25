@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
@@ -16,6 +16,17 @@ import OrderLookup from "./pages/OrderLookup/OrderLookup";
 import Shipping from "./pages/Shipping/Shipping";
 import Account from "./pages/Account/Account";
 import Seller from "./pages/Seller/Seller";
+import AdminLayout from "./admin/layouts/AdminLayout";
+import DashBoard from "./admin/pages/DashBoard/DashBoard";
+import UsersPage from "./admin/pages/UsersPage/UsersPage";
+import UserDetailPage from "./admin/pages/UserDetailPage/UserDetailPage";
+import SellerPage from "./admin/pages/SellerPage/SellerPage";
+import SellerDetailPage from "./admin/pages/SellerDetailPage/SellerDetailPage";
+import ProductPage from "./admin/pages/ProductsPage/ProductPage";
+import ProductDetailPage from "./admin/pages/ProductDetailPage/ProductDetailPage";
+import OrdersPage from "./admin/pages/OrdersPage/OrdersPage";
+import OrderDetailPage from "./admin/pages/OrderDetailPage/OrderDetailPage";
+import PaymentsPage from "./admin/pages/PaymentsPage/PaymentsPage";
 import { CategoryProvider } from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -36,30 +47,53 @@ export default function App() {
       <AuthProvider>
         <CategoryProvider>
           <CartProvider>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/danh-muc/:slug" element={<Category />} />
-              <Route path="/san-pham/:slug" element={<ProductDetail />} />
-              <Route path="/gio-hang" element={<Cart />} />
-              <Route path="/thanh-toan" element={<Checkout />} />
-              <Route path="/dat-hang-thanh-cong/:id" element={<OrderSuccess />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/dang-nhap" element={<Auth />} />
-              <Route path="/dang-ky" element={<Auth initialTab="register" />} />
-              <Route path="/tin-tuc/:slug" element={<NewsDetail />} />
-              <Route path="/cua-hang" element={<Store />} />
-              <Route path="/tra-cuu-don-hang" element={<OrderLookup />} />
-              <Route path="/giao-hang" element={<Shipping />} />
-              <Route path="/tai-khoan" element={<Account />} />
-              <Route path="/tai-khoan/:tab" element={<Account />} />
-              <Route path="/seller" element={<Seller />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
+            <AppRoutes />
           </CartProvider>
         </CategoryProvider>
       </AuthProvider>
     </BrowserRouter>
+  );
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  return (
+    <>
+      {!isAdminRoute && <Header />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/danh-muc/:slug" element={<Category />} />
+        <Route path="/san-pham/:slug" element={<ProductDetail />} />
+        <Route path="/gio-hang" element={<Cart />} />
+        <Route path="/thanh-toan" element={<Checkout />} />
+        <Route path="/dat-hang-thanh-cong/:id" element={<OrderSuccess />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/dang-nhap" element={<Auth />} />
+        <Route path="/dang-ky" element={<Auth initialTab="register" />} />
+        <Route path="/tin-tuc/:slug" element={<NewsDetail />} />
+        <Route path="/cua-hang" element={<Store />} />
+        <Route path="/tra-cuu-don-hang" element={<OrderLookup />} />
+        <Route path="/giao-hang" element={<Shipping />} />
+        <Route path="/tai-khoan" element={<Account />} />
+        <Route path="/tai-khoan/:tab" element={<Account />} />
+        <Route path="/seller" element={<Seller />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<DashBoard />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="users/:userId" element={<UserDetailPage />} />
+          <Route path="sellers" element={<SellerPage />} />
+          <Route path="sellers/:sellerId" element={<SellerDetailPage />} />
+          <Route path="products" element={<ProductPage />} />
+          <Route path="products/:productId" element={<ProductDetailPage />} />
+          <Route path="orders" element={<OrdersPage />} />
+          <Route path="orders/:orderId" element={<OrderDetailPage />} />
+          <Route path="payments" element={<PaymentsPage />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {!isAdminRoute && <Footer />}
+    </>
   );
 }

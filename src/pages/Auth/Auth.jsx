@@ -44,7 +44,7 @@ function LoginForm() {
     if (!form.email.trim()) e.email = "Vui lòng nhập email";
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = "Email không hợp lệ";
     if (!form.password) e.password = "Vui lòng nhập mật khẩu";
-    if (!["buyer", "seller"].includes(form.role)) e.role = "Vai trò không hợp lệ";
+    if (!["buyer", "seller", "admin"].includes(form.role)) e.role = "Vai trò không hợp lệ";
     return e;
   }
 
@@ -63,7 +63,7 @@ function LoginForm() {
 
     try {
       await signIn(form.email.trim(), form.password, form.role);
-      navigate(from, { replace: true });
+      navigate(form.role === "admin" && from === "/" ? "/admin" : from, { replace: true });
     } catch (err) {
       setServerError(getAuthErrorMessage(err.message));
     } finally {
@@ -109,7 +109,7 @@ function LoginForm() {
           placeholder="Nhập mật khẩu" value={form.password} onChange={handleChange} autoComplete="current-password" />
         {errors.password && <span className={styles.errorMsg}>{errors.password}</span>}
       </div>
-      <RoleSelect value={form.role} onChange={handleChange} error={errors.role} prefix="login" />
+      <RoleSelect value={form.role} onChange={handleChange} error={errors.role} prefix="login" includeAdmin />
       <button
         type="button"
         className={styles.forgotLink}
@@ -226,11 +226,11 @@ function RegisterForm({ onSuccess }) {
   );
 }
 
-function RoleSelect({ value, onChange, error, prefix }) {
+function RoleSelect({ value, onChange, error, prefix, includeAdmin = false }) {
   return (
     <div className={styles.field}>
       <span className={styles.label}>Vai trò</span>
-      <div className={styles.roleOptions}>
+      <div className={`${styles.roleOptions} ${includeAdmin ? styles.roleOptionsThree : ""}`}>
         <label className={`${styles.roleOption} ${value === "buyer" ? styles.roleOptionActive : ""}`}>
           <input
             id={`${prefix}-role-buyer`}
@@ -253,6 +253,19 @@ function RoleSelect({ value, onChange, error, prefix }) {
           />
           Người bán
         </label>
+        {includeAdmin && (
+          <label className={`${styles.roleOption} ${value === "admin" ? styles.roleOptionActive : ""}`}>
+            <input
+              id={`${prefix}-role-admin`}
+              name="role"
+              type="radio"
+              value="admin"
+              checked={value === "admin"}
+              onChange={onChange}
+            />
+            Admin
+          </label>
+        )}
       </div>
       {error && <span className={styles.errorMsg}>{error}</span>}
     </div>
