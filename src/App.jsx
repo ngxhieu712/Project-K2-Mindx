@@ -15,6 +15,7 @@ import Store from "./pages/Store/Store";
 import OrderLookup from "./pages/OrderLookup/OrderLookup";
 import Shipping from "./pages/Shipping/Shipping";
 import Account from "./pages/Account/Account";
+import Wallet from "./pages/Wallet/Wallet";
 import Seller from "./pages/Seller/Seller";
 import AdminLayout from "./admin/layouts/AdminLayout";
 import DashBoard from "./admin/pages/DashBoard/DashBoard";
@@ -30,6 +31,7 @@ import PaymentsPage from "./admin/pages/PaymentsPage/PaymentsPage";
 import { CategoryProvider } from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { WalletProvider } from "./context/WalletContext";
 import "./index.css";
 
 function NotFound() {
@@ -45,11 +47,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <CategoryProvider>
-          <CartProvider>
-            <AppRoutes />
-          </CartProvider>
-        </CategoryProvider>
+        <WalletProvider>
+          <CategoryProvider>
+            <CartProvider>
+              <AppRoutes />
+            </CartProvider>
+          </CategoryProvider>
+        </WalletProvider>
       </AuthProvider>
     </BrowserRouter>
   );
@@ -78,6 +82,7 @@ function AppRoutes() {
         <Route path="/giao-hang" element={<Shipping />} />
         <Route path="/tai-khoan" element={<Account />} />
         <Route path="/tai-khoan/:tab" element={<Account />} />
+        <Route path="/vi" element={<Wallet />} />
         <Route path="/seller" element={<Seller />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashBoard />} />

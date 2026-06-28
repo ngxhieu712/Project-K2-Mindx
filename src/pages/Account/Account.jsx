@@ -14,6 +14,7 @@ const STATUS_CLASS = { pending: styles.statusPending, confirmed: styles.statusCo
 const NAV = [
   { id: "profile", icon: "👤", label: "Thông tin tài khoản" },
   { id: "orders", icon: "📦", label: "Đơn hàng của tôi" },
+  { id: "wallet", icon: "💰", label: "Ví của tôi", link: "/vi" },
   { id: "logout", icon: "🚪", label: "Đăng xuất" },
 ];
 
@@ -41,6 +42,12 @@ export default function Account() {
     navigate("/");
   }
 
+  function handleNavClick(item) {
+    if (item.id === "logout") return handleLogout();
+    if (item.link) return navigate(item.link);
+    setTab(item.id);
+  }
+
   return (
     <main className={styles.main}>
       <div className="container">
@@ -58,8 +65,8 @@ export default function Account() {
               {NAV.map(item => (
                 <li key={item.id}>
                   <button
-                    className={`${styles.navItem} ${tab === item.id ? styles.navItemActive : ""}`}
-                    onClick={() => item.id === "logout" ? handleLogout() : setTab(item.id)}
+                    className={`${styles.navItem} ${tab === item.id && !item.link ? styles.navItemActive : ""}`}
+                    onClick={() => handleNavClick(item)}
                   >
                     <span className={styles.navIcon}>{item.icon}</span>
                     {item.label}

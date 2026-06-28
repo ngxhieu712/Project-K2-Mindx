@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useCategories } from "../../context/CategoryContext";
 import { useAuth } from "../../context/AuthContext";
+import { useWallet } from "../../context/WalletContext";
+import { formatPrice } from "../../utils/format";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -12,6 +14,7 @@ export default function Header() {
   const { totalItems } = useCart();
   const { categories } = useCategories();
   const { user, profile } = useAuth();
+  const { balance, loading: walletLoading } = useWallet();
   const menuRef = useRef(null);
 
   // Đóng dropdown khi click ra ngoài
@@ -53,6 +56,9 @@ export default function Header() {
                 {profile?.role === "seller" && (
                   <Link to="/seller" className={styles.topLink}>🏪 Quản lý</Link>
                 )}
+                <Link to="/vi" className={styles.topLink}>
+                  💰 {walletLoading ? "Ví..." : formatPrice(balance)}
+                </Link>
                 <Link to="/tai-khoan" className={styles.topLink}>
                   👤 {profile?.name || user.email}
                 </Link>
