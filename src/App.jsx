@@ -27,6 +27,7 @@ import ProductDetailPage from "./admin/pages/ProductDetailPage/ProductDetailPage
 import OrdersPage from "./admin/pages/OrdersPage/OrdersPage";
 import OrderDetailPage from "./admin/pages/OrderDetailPage/OrderDetailPage";
 import PaymentsPage from "./admin/pages/PaymentsPage/PaymentsPage";
+import { ProtectedRoute, SellerRoute } from "./components/ProtectedRoute";
 import { CategoryProvider } from "./context/CategoryContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -66,9 +67,6 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/danh-muc/:slug" element={<Category />} />
         <Route path="/san-pham/:slug" element={<ProductDetail />} />
-        <Route path="/gio-hang" element={<Cart />} />
-        <Route path="/thanh-toan" element={<Checkout />} />
-        <Route path="/dat-hang-thanh-cong/:id" element={<OrderSuccess />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dang-nhap" element={<Auth />} />
         <Route path="/dang-ky" element={<Auth initialTab="register" />} />
@@ -76,9 +74,20 @@ function AppRoutes() {
         <Route path="/cua-hang" element={<Store />} />
         <Route path="/tra-cuu-don-hang" element={<OrderLookup />} />
         <Route path="/giao-hang" element={<Shipping />} />
-        <Route path="/tai-khoan" element={<Account />} />
-        <Route path="/tai-khoan/:tab" element={<Account />} />
-        <Route path="/seller" element={<Seller />} />
+
+        {/* Routes yêu cầu đăng nhập */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/gio-hang" element={<Cart />} />
+          <Route path="/thanh-toan" element={<Checkout />} />
+          <Route path="/dat-hang-thanh-cong/:id" element={<OrderSuccess />} />
+          <Route path="/tai-khoan" element={<Account />} />
+          <Route path="/tai-khoan/:tab" element={<Account />} />
+        </Route>
+
+        {/* Routes yêu cầu seller / admin */}
+        <Route element={<SellerRoute />}>
+          <Route path="/seller" element={<Seller />} />
+        </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashBoard />} />
           <Route path="users" element={<UsersPage />} />
